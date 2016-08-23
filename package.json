@@ -1,10 +1,11 @@
 {
   "name": "min-state",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple finite state machine library for javascript",
   "main": "state.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"readme": "pretty-readme > readme.md"
   },
   "author": "",
   "license": "ISC",
