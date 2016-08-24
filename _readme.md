@@ -15,6 +15,7 @@ method
 - `state.is(stateName)` return true if current state name is val
 - `state.set(stateName)` set state current state
 - `state.get()` get state current state
+- `state.can(eventName)` return true if current state can trigger this event
 - `state.setEvent(stateName, from, to)` set event which can only transition from stateA to stateB
 - `state.setEvents({stateName: {from: stateA, to: stateB}})` multiply set event
 
@@ -22,10 +23,11 @@ method
 
 events
 
-- `enter, state`
-- `exit, state`
-- `statechange, {from: stateA, to: stateB}`
-- `invalid, eventName`
+- `enter, state` enter this state
+- `exit, state` exit this state
+- `end, state` state machine end
+- `statechange, {from: stateA, to: stateB}` state change
+- `invalid, eventName` invalid event trigger
 
 example
 

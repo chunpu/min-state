@@ -42,6 +42,7 @@ proto.set = function(state) {
 			})
 			if (me.param.end == state) {
 				me.ended = true
+				me.emit('end', state)
 			}
 		}
 	}
@@ -51,24 +52,35 @@ proto.get = function() {
 	return this.currentState
 }
 
-proto.setEvent = function(name, from, to) {
+proto.can = function(event) {
+	var me = this
+	var item = me.events[event]
+	if (item) {
+		if (isStateMatch(item.from, me.get())) {
+			return true
+		}
+	}
+	return false
+}
+
+proto.setEvent = function(event, from, to) {
 	var me = this
 	var events = me.events
-	var item = events[name]
+	var item = events[event]
 	if (item) {
 		item.from = from
 		item.to = to
 	} else {
 		// new event
-		events[name] = {
+		events[event] = {
 			from: from,
 			to: to
 		}
-		me.on(name, function() {
-			if (from == me.get()) {
-				me.set(to)
-			} else {
-				me.emit('invalid', name)
+		me.on(event, function() {
+			// get item real time because it can be overwrite
+			if (me.can(event)) {
+				// then it has event
+				me.set(me.events[event].to)
 			}
 		})
 	}
@@ -76,9 +88,9 @@ proto.setEvent = function(name, from, to) {
 
 proto.setEvents = function(events) {
 	var me = this
-	_.forIn(events, function(item, name) {
+	_.forIn(events, function(item, event) {
 		if (item) {
-			me.setEvent(name, item.from, item.to)
+			me.setEvent(event, item.from, item.to)
 		}
 	})
 }

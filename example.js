@@ -9,6 +9,10 @@ state.setEvents({
 	play: {
 		from: 'loaded',
 		to: 'playing'
+	},
+	stop: {
+		from: '*',
+		to: 'ended'
 	}
 })
 
@@ -28,11 +32,17 @@ state.on('exit', function(e) {
 	console.log('exit', e)
 })
 
+state.on('end', function() {
+	console.log('state machine finished')
+})
+
 setTimeout(function() {
 	state.set('loading')
 	state.emit('play') // should fail
+	console.log('can play', state.can('play'))
 	setTimeout(function() {
 		state.set('loaded')
+		console.log('can play', state.can('play'))
 		setTimeout(function() {
 			state.emit('play')
 			setTimeout(function() {
